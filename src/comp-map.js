@@ -10,7 +10,7 @@ class MapGoogle extends Component {
   componentDidMount() {
     var myLatLng = {lat: 19.4978, lng: -99.1269};
 
-    var map = new window.google.maps.Map(document.getElementById("map"), {
+    var map = new window.google.maps.Map(this.mapRef.current, {
       zoom: 9,
       center: myLatLng
     });
