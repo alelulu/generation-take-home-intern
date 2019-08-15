@@ -8,18 +8,12 @@ import MapGoogle from './comp-map.js'
 class YourComponent extends Component {
   render() {
     return (
-      <div style={divStyle}>
+      <div>
+        <div>Holahoasldasd</div>
         <MapGoogle/>
       </div>
     );
   }
 }
-
-var divStyle = {
-  border: 'red',
-  borderWidth: 2,
-  borderStyle: 'solid',
-  padding: 20
-};
 
 export default YourComponent;
