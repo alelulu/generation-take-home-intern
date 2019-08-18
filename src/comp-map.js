@@ -133,5 +133,5 @@ const style = {
   height: '800px'
 }
 export default GoogleApiWrapper({
-  apiKey: ("AIzaSyCVH8e45o3d-5qmykzdhGKd1-3xYua5D2A")
+  apiKey: ("AIzaSyBymZs7mwtaNKsnJ3Fpt5tzvY1HPp2cQzY")
 })(MapGoogle)
