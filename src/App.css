@@ -1,3 +1,11 @@
-.App {
-  margin: 15px;
+@import url('https://fonts.googleapis.com/css?family=Titillium+Web&display=swap');
+body {
+  font-family: 'Titillium Web', sans-serif;
+}
+.map-title {
+  text-align: center;
+  color: #ff637d;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  
 }

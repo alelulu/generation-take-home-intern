@@ -15,11 +15,10 @@ export class MapGoogle extends Component {
       markers: [],
       favorites: []
     }
-    this.addFav = this.addFav.bind(this)
   }
 
   onInfoWindowOpen(props, e) {
-    const button = (<button onClick={this.addFav.bind(this, this.state.selectedPlace)}>Agragar favorito</button>);
+    const button = (<button className="fav-btn" onClick={this.addFav.bind(this, this.state.selectedPlace)}><i className="fas fa-star"></i></button>);
     ReactDOM.render(React.Children.only(button), document.getElementById("div-fav"));
   }
 
@@ -47,8 +46,6 @@ export class MapGoogle extends Component {
     else{
       alert("Ya existe esta tienda en favoritos ⭐")
     }
-    
-    console.log(this.state.favorites)
     this.setState()
   }
 
@@ -62,65 +59,78 @@ export class MapGoogle extends Component {
   render() {
     return (
       <div>
-        <div>
-          <h1>Tus tiendas favoritas:</h1>
-          <div>
-            {this.state.favorites.map(e => {
-              return (
-                <h5 key={e.Address}>{e.Name} <span><button onClick={this.removeFav.bind(this, e)}>Quitar de favoritos</button></span></h5>
-              )
-            })}
+        <div className="row">
+          <div className="col-sm-12 col-md-3">
+            <div className="fav-div">
+              <h5 className="fav-list-title">Tus tiendas favoritas irán apareciendo aquí, sólo debes abrir una tienda!</h5>
+              <div>
+                {this.state.favorites.map(e => {
+                  return (
+                    <div className="row store-container">
+                      <div className="col-9">
+                        <p className="store-name" key={e.Address}>{e.Name}</p>
+                      </div>
+                      <div className="col-3">
+                        <button className="fav-delete-btn" onClick={this.removeFav.bind(this, e)}><i className="fas fa-times"></i></button>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          </div>
+          <div className="col-sm-12 col-md-9">
+            <Map
+              style={style}
+              google={this.props.google}
+              initialCenter={{
+                lat: 19.4978,
+                lng: -99.1269
+              }}
+              zoom={10}
+              onClick={this.onMapClicked}
+            > 
+            {
+              stores.map(element => {
+                this.state.markers.push({
+                  position: element.Coordinates,
+                  address: element.Address,
+                  name: element.Name
+                })
+                return (
+                  <Marker
+                    onClick={this.onMarkerClick}
+                    name={element.Name}
+                    key={element.Address}
+                    position={element.Coordinates}
+                    place_={element}
+                  />
+                )
+              })
+            }
+              <InfoWindow
+                marker={this.state.activeMarker}
+                visible={this.state.showingInfoWindow}
+                onOpen={e => {
+                  this.onInfoWindowOpen(this.props, e);
+                }}>
+                  <div className="div-infowindow">
+                    <h4 className="fav-window-title">{this.state.selectedPlace.Name}</h4>
+                    <p className="fav-p">Agrega esta tienda a favoritos</p>
+                    <div id="div-fav"></div>
+                  </div>
+              </InfoWindow>
+            </Map>
           </div>
         </div>
-        <Map
-          style={style}
-          google={this.props.google}
-          initialCenter={{
-            lat: 19.4978,
-            lng: -99.1269
-          }}
-          zoom={10}
-          onClick={this.onMapClicked}
-        > 
-        {
-          stores.map(element => {
-            this.state.markers.push({
-              position: element.Coordinates,
-              address: element.Address,
-              name: element.Name
-            })
-            return (
-              <Marker
-                onClick={this.onMarkerClick}
-                name={element.Name}
-                key={element.Address}
-                position={element.Coordinates}
-                place_={element}
-              />
-            )
-          })
-        }
-          <InfoWindow
-            marker={this.state.activeMarker}
-            visible={this.state.showingInfoWindow}
-            onOpen={e => {
-              this.onInfoWindowOpen(this.props, e);
-            }}>
-              <div>
-                <h1>{this.state.selectedPlace.Name}</h1>
-                <div id="div-fav"></div>
-              </div>
-          </InfoWindow>
-        </Map>
-      </div>  
+      </div>
     )
   }
 };
 
-
 const style = {
   width: '100%',
-  height: '80%'
+  height: '800px'
 }
 export default GoogleApiWrapper({
   apiKey: ("AIzaSyCVH8e45o3d-5qmykzdhGKd1-3xYua5D2A")
